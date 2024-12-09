@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfissionalDAO extends GenericDAO<Profissional> {
 
@@ -154,5 +156,37 @@ public class ProfissionalDAO extends GenericDAO<Profissional> {
             DatabaseConnection.closeStatement(stmt);
             DatabaseConnection.closeConnection(conn);
         }
+        
     }
+    public List<Profissional> buscarPorCidade(int idCidade) {
+    String sql = "SELECT id_profissional, nome, cpf, rg, especialidade, telefone, email, id_cidade " +
+                 "FROM Profissional WHERE id_cidade = ?";
+    List<Profissional> profissionais = new ArrayList<>();
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setInt(1, idCidade);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Profissional profissional = new Profissional();
+                profissional.setIdProfissional(rs.getInt("id_profissional"));
+                profissional.setNome(rs.getString("nome"));
+                profissional.setCpf(rs.getString("cpf"));
+                profissional.setRg(rs.getString("rg"));
+                profissional.setEspecialidade(rs.getString("especialidade"));
+                profissional.setTelefone(rs.getString("telefone"));
+                profissional.setEmail(rs.getString("email"));
+                profissional.setId_cidade(rs.getInt("id_cidade"));
+
+                profissionais.add(profissional);
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Erro ao buscar profissionais por cidade: " + e.getMessage());
+    }
+
+    return profissionais;
+}
 }

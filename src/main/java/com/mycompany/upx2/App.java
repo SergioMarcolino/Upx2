@@ -1,7 +1,7 @@
 
 package com.mycompany.upx2;
 
-import java.time.LocalDate;
+import java.util.List;
 
 
 public class App {
@@ -94,7 +94,7 @@ public class App {
           ProfissionalAlocacaoDAO profissionalAlocacaoDAO = new ProfissionalAlocacaoDAO();
 
         // Criar objetos para testar a alocação
-        Profissional_Alocacao profissionalAlocacao1 = new Profissional_Alocacao();
+      /*   Profissional_Alocacao profissionalAlocacao1 = new Profissional_Alocacao();
         profissionalAlocacao1.setFkIdProfissional(1008);  // ID do profissional
         profissionalAlocacao1.setFkIdAlocacao(7);     // ID da alocação
         profissionalAlocacao1.setFkIdCidade(3);       // ID da cidade (exemplo)
@@ -111,8 +111,19 @@ public class App {
             System.out.println("Profissional alocado com sucesso!");
         } else {
             System.out.println("Profissional não pode ser alocado. Verifique os dados.");
+        }*/
+        int idCidade = 3; // ID da cidade que você deseja consultar
+        List<Profissional> profissionais = profissionalDAO.buscarPorCidade(idCidade);
+
+        if (profissionais.isEmpty()) {
+            System.out.println("Nenhum profissional encontrado para a cidade com ID: " + idCidade);
+        } else {
+        System.out.println("Profissionais encontrados:");
+            for (Profissional profissional : profissionais) {
+        System.out.println("ID: " + profissional.getIdProfissional() + ", Nome: " + profissional.getNome());
+             }
         }
-     }    
+    }    
 }
 
 
